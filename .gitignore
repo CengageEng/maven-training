@@ -1,0 +1,6 @@
+solutions/*/target
+solutions/*/.idea
+solutions/*/*.iml
+*/target
+*/.idea
+*/*.iml
