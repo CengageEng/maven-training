@@ -33,7 +33,7 @@ Maven has its way of doing things. If you have a problem that's not obvious to s
 ## Maven Basics
 
 ### Creating a New Project
-Start off with the simplest POM. Just a GAV.
+Start off with the simplest POM. Just the coordinates. Add a defaultGoal.
 
 ### Maven Lifecycle
 Default lifecycle:
@@ -65,7 +65,7 @@ deploy                | deploy:deploy
 We'll see more about binding goals to phases later. You can execute phases or goals directly on the command line.
 
 ### Basic Dependency Management
-Maven manages transitive dependencies declaratively. This is one of the greatest benefits of Maven, and other tools (such as Ivy) have copied its model. A dependency consists minimally of a groupId, artifactId, and version. Optionally, a scope can be specified. Possible scopes are compile (the default), test, provided (added to classpath for compile, not runtime), runtime (not added to classpath at compile time), and system (don't use it…for specifying a local file).
+Maven manages transitive dependencies declaratively. This is one of the greatest benefits of Maven, and other tools (such as Ivy) have copied its model. A dependency consists minimally of a groupId, artifactId, and version (the coordinates). Optionally, a scope can be specified. Possible scopes are compile (the default), test, provided (added to classpath for compile, not runtime), runtime (not added to classpath at compile time), and system (don't use it…for specifying a local file).
 
 ### Directory Layout
 Convention over configuration. Look at the Super POM. (mvn help:effective-pom)
@@ -98,7 +98,7 @@ Plugins you'll frequently encounter include the compile plugin and the SureFire 
 The packaging for a module defines the lifecycle bindings for that module as well as how the build artifact is packaged. Most common is jar packaging, that packages up your class files into a jar. Also common are the pom packaging, for container modules, and war packaging for web artifacts.
 
 ### Exercise: Add TestNG Unit Tests
-Configure the SureFire plugin to run TestNG instead of JUnit.
+Configure the SureFire plugin to run TestNG instead of JUnit. Bonus: add a Cobertura report.
 
 ## Multi-Module Maven
 Most projects become complex enough that they can be decomposed into multiple modules. Maven's straightforward module system and transitive dependency system make it really easy to split your system into multiple modules (assuming you haven't already created crazy circular dependency issues).
@@ -108,3 +108,53 @@ A multi-module project typically consists of a top-level container with pom pack
 Modules are useful for grouping related functionality and, perhaps more importantly, for isolating functionality that should not be grouped. Strive for loose coupling and high cohesion. Vertical module stacks (service-web/webservice).
 
 Digression: why separate code into modules? To enforce code boundaries, dependency relationships. As a unit for sharing code (can depend on a library jar). As a way of organizing dependencies. (E.g. some code needs an HTTP client. Not all your code should talk directly via HTTP. Isolate the HTTP client code into a module, then other code can depend on that without depending on the HTTP client.) As a unit of packaging (to generate a WAR, for example).
+
+### Parent Child Relationships
+
+Each maven project can specify an explicit parent, from which it will inherit configuration. If no parent is specified, it inherits from the Super POM. The parent project can be used to manage common configuration such as plugin settings and dependencyManagement information.
+
+Project inheritance should be used for settings that should be shared across multiple projects, not as a way to express dependencies. An inheritance relationship is not required for but often coincides with containing and grouping of sub-projects.
+
+A typical multi-module might be structured like this:
+
+           my-project
+          /     |    \
+     common  service web
+
+The web module might depend on common, but it does not inherit from it. Common, service, and web all inherit from my-project, which is used to establish common dependency versions and other settings for all the sub-projects/modules.
+
+
+
+** local sub-module dependency
+** naming
+** package naming
+
+
+### Integration Testing
+Effective integration testing can be one of the trickier problems to solve in Maven. Because integration testing often involves deployment into a container and other associated tasks, it often doesn't fit directly into Maven's model of transforming source code into artifacts, and looks more like general automation. That said, there are ways to work effective integration testing into your build.
+
+The main challenges in adding integration testing to a Maven build are fitting the testing into Maven's lifecycle and triggering the needed software actions to start and stop a container, deploy the software, and run tests against it, all in the correct order. Maven's main construct for ordering operations is its lifecycle. Let's look at the default lifecycle in more detail:
+* validate (basic project correctness)
+* generate-sources
+* process-sources
+* generate-resources
+* process-resources
+* compile
+* process-classes
+* generate-test-sources
+* process-test-sources
+* generate-test-resources
+* process-test-resources
+* test-compile
+* test (unit tests before packaging)
+* prepare-package
+* package (build the output artifact e.g. jar or war)
+* pre-integration-test
+* integration-test (more on this later)
+* post-integration-test
+* verify (quality checks)
+* install (install artifact into local repository…most of the time you want this)
+* deploy (not what you thing…deploys artifact to a Maven repository)
+
+
+A common pattern for accomplishing integration testing involves a multi-stage build. 

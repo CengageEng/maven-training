@@ -16,6 +16,7 @@ Intro to Maven
 * Creating a new project
 * Maven Lifecycle
 * Basic dependency management
+* ****Snapshots/versions
 * Directory layout
 * Super POM
 * Exercise: Simple library project
@@ -28,6 +29,8 @@ Intro to Maven
 
 ## Multi-module Maven
 * Parent child relationships
+* Intra-project dependencies
+* Exercise: Simple multi-module project
 * Integrating integration testing with Cargo
 * Exercise: Multi-module build with testing
 
@@ -41,3 +44,13 @@ Intro to Maven
 ## Social Maven
 * The release plugin and Maven's release model
 * Using Nexus and other repositories
+
+
+
+
+# Link to resources
+# reading plugin docs
+# Javascript testing
+gruntfile.js in nb-ui
+# ide integration
+
