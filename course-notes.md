@@ -139,13 +139,16 @@ Reference: http://maven.apache.org/guides/mini/guide-multiple-modules.html
 
 Cross module dependencies within a multi-module project are expressed as any other dependencies. Dependency resolution may be different between building the whole project with the reactor and building a single sub-module in isolation. Just run install all the time to avoid confusion.
 
+### Finding Dependencies
+http://mvnrepository.com/ or GitHub project information, or just use your IDE if it works.
+
 ### Exercise: Multi-Module Project
 
 Now that we have a HelloWorld utility, we'd like to use it to greet people on our roster of users. For each name in the roster, we'd like to output the hello greeting with that name. While the HelloWorld utility may be generally useful in our future endeavors, this greeting service is specialized functionality, so we'd like to put it in its own module. There's also another library we can use (Google Guava) that will help us implement this functionality, but isn't needed for the simple HelloWorld utility.
 
 ### Building for the Web
 
-Use ```war``` packaging and place ```WEB-INF``` resources in ```src/main/webapp```.
+Use ```war``` packaging and place ```WEB-INF``` resources in ```src/main/webapp/WEB-INF/```. Anything in
 
 ### Exercise: Simple Web Project
 
