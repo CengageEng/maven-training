@@ -109,6 +109,18 @@ Modules are useful for grouping related functionality and, perhaps more importan
 
 Digression: why separate code into modules? To enforce code boundaries, dependency relationships. As a unit for sharing code (can depend on a library jar). As a way of organizing dependencies. (E.g. some code needs an HTTP client. Not all your code should talk directly via HTTP. Isolate the HTTP client code into a module, then other code can depend on that without depending on the HTTP client.) As a unit of packaging (to generate a WAR, for example).
 
+### Hard Things
+There are only two hard things in Computer Science: cache invalidation, naming things, and off-by-one errors.
+
+http://martinfowler.com/bliki/TwoHardThings.html
+
+GroupIds are usually named similarly to packages. Within big organizations, I often match groupIds to package hierarchies, for example: ```com.example.mymodule``` would be both the groupId and the Java package into which all the code in sub-modules are packaged. I find it helps to add a level of package hierarchy for the artifactId as well. So a ```utility``` module in the ```com.example.mymodule``` group would have packages prefixed with ```com.example.mymodule.utility```. For small organizations, it's often enough to use the organization's domain name as a groupId and name each module in the form ```{project}-{module}```.
+
+For a simple multi-module Scala project published to Maven Central: https://github.com/cyrusinnovation/stubble
+
+One thing to be aware of is changing module names in development. Once you install a module or project, a copy resides in your local repository. Modules without updated dependency information may still be able to pick up the old name, so the project will only break when someone without the old artifact in their repository tries to build. You can avoid this by manual removing the renamed artifact from ```~/.m2/repository```.
+
+
 ### Parent Child Relationships
 
 Each maven project can specify an explicit parent, from which it will inherit configuration. If no parent is specified, it inherits from the Super POM. The parent project can be used to manage common configuration such as plugin settings and dependencyManagement information.
@@ -123,11 +135,21 @@ A typical multi-module might be structured like this:
 
 The web module might depend on common, but it does not inherit from it. Common, service, and web all inherit from my-project, which is used to establish common dependency versions and other settings for all the sub-projects/modules.
 
+Reference: http://maven.apache.org/guides/mini/guide-multiple-modules.html
 
+Cross module dependencies within a multi-module project are expressed as any other dependencies. Dependency resolution may be different between building the whole project with the reactor and building a single sub-module in isolation. Just run install all the time to avoid confusion.
 
-** local sub-module dependency
-** naming
-** package naming
+### Exercise: Multi-Module Project
+
+Now that we have a HelloWorld utility, we'd like to use it to greet people on our roster of users. For each name in the roster, we'd like to output the hello greeting with that name. While the HelloWorld utility may be generally useful in our future endeavors, this greeting service is specialized functionality, so we'd like to put it in its own module. There's also another library we can use (Google Guava) that will help us implement this functionality, but isn't needed for the simple HelloWorld utility.
+
+### Building for the Web
+
+Use ```war``` packaging and place ```WEB-INF``` resources in ```src/main/webapp```.
+
+### Exercise: Simple Web Project
+
+We'd like to expose our HelloWorld utility as a web service. Write a simple servlet that extracts the name from the URL and serves the hello response as plain text.
 
 
 ### Integration Testing

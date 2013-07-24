@@ -12,7 +12,7 @@ Intro to Maven
 ## The Maven Way
 * Don't fight Maven. You'll lose.
   
-## Maven basics
+## Maven Basics
 * Creating a new project
 * Maven Lifecycle
 * Basic dependency management
@@ -21,16 +21,19 @@ Intro to Maven
 * Super POM
 * Exercise: Simple library project
   
-## More basics
+## More Basics
 * Plugin configuration
 * Common plugins (SureFire, compiler)
 * War projects
 * Exercise: add TestNG testing (assuming I can get it TestNG and SureFire to play nice)
 
-## Multi-module Maven
+## Multi-Module Maven
 * Parent child relationships
 * Intra-project dependencies
 * Exercise: Simple multi-module project
+
+## Web Projects
+* WAR packaging
 * Integrating integration testing with Cargo
 * Exercise: Multi-module build with testing
 

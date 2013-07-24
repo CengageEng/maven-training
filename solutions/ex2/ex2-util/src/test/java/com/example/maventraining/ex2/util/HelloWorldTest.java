@@ -1,6 +1,5 @@
-package com.example.maventraining.ex2.common;
+package com.example.maventraining.ex2.util;
 
-import com.example.maventraining.ex2.common.HelloWorld;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

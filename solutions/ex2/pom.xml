@@ -20,7 +20,7 @@
   </dependencies>
 
   <modules>
-    <module>ex2-common</module>
+    <module>ex2-util</module>
     <module>ex2-service</module>
   </modules>
 

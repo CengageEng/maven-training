@@ -1,4 +1,4 @@
-package com.example.maventraining.ex2.common;
+package com.example.maventraining.ex2.util;
 
 public class HelloWorld {
     public String hello(String name) {

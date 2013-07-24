@@ -1,6 +1,6 @@
 package com.example.maventraining.ex2.service;
 
-import com.example.maventraining.ex2.common.HelloWorld;
+import com.example.maventraining.ex2.util.HelloWorld;
 import com.google.common.base.Function;
 
 import java.util.List;

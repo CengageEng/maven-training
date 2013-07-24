@@ -15,7 +15,7 @@
   <dependencies>
     <dependency>
       <groupId>com.example.maventraining</groupId>
-      <artifactId>ex2-common</artifactId>
+      <artifactId>ex2-util</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
     <dependency>
