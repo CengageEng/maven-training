@@ -37,6 +37,7 @@ Start off with the simplest POM. Just the coordinates. Add a defaultGoal.
 
 ### Maven Lifecycle
 Default lifecycle:
+
 * validate (basic project correctness)
 * compile
 * test (unit tests before packaging)
@@ -67,6 +68,9 @@ We'll see more about binding goals to phases later. You can execute phases or go
 ### Basic Dependency Management
 Maven manages transitive dependencies declaratively. This is one of the greatest benefits of Maven, and other tools (such as Ivy) have copied its model. A dependency consists minimally of a groupId, artifactId, and version (the coordinates). Optionally, a scope can be specified. Possible scopes are compile (the default), test, provided (added to classpath for compile, not runtime), runtime (not added to classpath at compile time), and system (don't use it…for specifying a local file).
 
+### Release and Snapshot Versions
+Maven has two types of dependency versions: release and snapshot. Snapshot dependencies are indicated by "```-SNAPSHOT```" in the version. Snapshot versions are treated differently by Maven's dependency management engine, in that they are treated as snapshots of a state in time in development. They are expected to change frequently, so they are re-fetched from upstream repositories frequently. Release versions, on the other hand, are expected to never change. Once you've downloaded a release version of an artifact, Maven will not attempt to download that artifact again.
+
 ### Directory Layout
 Convention over configuration. Look at the Super POM. (mvn help:effective-pom)
 
@@ -93,6 +97,8 @@ Maven's main construct of modularity is the plugin. Many of the aspects of your 
 
 ### Common Plugins
 Plugins you'll frequently encounter include the compile plugin and the SureFire plugin that runs unit tests. Behind the scenes and able to be customized are the maven-resources-plugin, the maven-dependency-plugin, and others.
+
+Note on reading plugin documentation: look first at the Introduction, Usage, and Goals sections. Almost all plugins have these, and that's where the information you're looking for is.
 
 ### Packaging
 The packaging for a module defines the lifecycle bindings for that module as well as how the build artifact is packaged. Most common is jar packaging, that packages up your class files into a jar. Also common are the pom packaging, for container modules, and war packaging for web artifacts.
@@ -148,7 +154,7 @@ Now that we have a HelloWorld utility, we'd like to use it to greet people on ou
 
 ### Building for the Web
 
-Use ```war``` packaging and place ```WEB-INF``` resources in ```src/main/webapp/WEB-INF/```. Anything in
+Use ```war``` packaging and place ```WEB-INF``` resources (e.g. web.xml) in ```src/main/webapp/WEB-INF/```. Anything in ```src/main/webapp``` will be packaged directly into the war file.
 
 ### Exercise: Simple Web Project
 
@@ -159,6 +165,7 @@ We'd like to expose our HelloWorld utility as a web service. Write a simple serv
 Effective integration testing can be one of the trickier problems to solve in Maven. Because integration testing often involves deployment into a container and other associated tasks, it often doesn't fit directly into Maven's model of transforming source code into artifacts, and looks more like general automation. That said, there are ways to work effective integration testing into your build.
 
 The main challenges in adding integration testing to a Maven build are fitting the testing into Maven's lifecycle and triggering the needed software actions to start and stop a container, deploy the software, and run tests against it, all in the correct order. Maven's main construct for ordering operations is its lifecycle. Let's look at the default lifecycle in more detail:
+
 * validate (basic project correctness)
 * generate-sources
 * process-sources
@@ -182,4 +189,14 @@ The main challenges in adding integration testing to a Maven build are fitting t
 * deploy (not what you thing…deploys artifact to a Maven repository)
 
 
-A common pattern for accomplishing integration testing involves a multi-stage build. 
+Our goal here is to build all our library modules, build the web module code and run as much testing against it we can without deploying into a container, then to deploy into a container and run a suite of end-to-end tests that verify the final packaging, deployment, and wiring.
+
+In the Java world, this normally means building a war file, starting Tomcat or some other servlet container, then running some JUnit/TestNG tests that invoke Selenium or some other HTTP client.
+
+The main construct we have in Maven to manage a container effectively is the [Cargo Plugin](http://cargo.codehaus.org/Maven2+plugin). Cargo allows you to configure a container within your Maven project and then start and stop the container at the right phases during the build. The catch is that Cargo works by using a dependency on your war artifact in order to deploy. This means it can't run during the integration-test phase of your web module, but you can separate your integration tests out into a dedicated module that will build after the web module is complete.
+
+
+### Exercise: Integration Testing the Web Module
+
+Write a simple integration test for the hello servlet using HTTPClient or Selenium and Cargo.
+

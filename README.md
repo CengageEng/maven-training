@@ -11,6 +11,11 @@ Intro to Maven
   
 ## The Maven Way
 * Don't fight Maven. You'll lose.
+
+## Resources
+The Sonatype Book: http://books.sonatype.com/mvnref-book/reference/index.html
+
+
   
 ## Maven Basics
 * Creating a new project
@@ -50,10 +55,8 @@ Intro to Maven
 
 
 
-
-# Link to resources
-# reading plugin docs
 # Javascript testing
 gruntfile.js in nb-ui
 # ide integration
 
+# reference info for each exercise
