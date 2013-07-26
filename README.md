@@ -10,18 +10,28 @@ Intro to Maven
 * Why not Maven?
   
 ## The Maven Way
-* Don't fight Maven. You'll lose.
+Don't fight Maven. You'll lose.
+
+Some general principles:
+
+* Don't be platform dependent
+* Don't depend on anything outside the build itself and repository it's in or published dependency artifacts (snapshot dependencies will cause your build to break eventually, for example)
+* Interact with other modules only through their artifacts as a dependency
+
 
 ## Resources
 The Sonatype Book: http://books.sonatype.com/mvnref-book/reference/index.html
-
+POM Reference: http://maven.apache.org/pom.html
+Standard directory layout: http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html
+Maven Getting Started Guide: http://maven.apache.org/guides/getting-started/index.html
+M2Eclipse: http://eclipse.org/m2e/
 
   
 ## Maven Basics
 * Creating a new project
 * Maven Lifecycle
 * Basic dependency management
-* ****Snapshots/versions
+* Snapshots/versions
 * Directory layout
 * Super POM
 * Exercise: Simple library project
@@ -56,6 +66,8 @@ The Sonatype Book: http://books.sonatype.com/mvnref-book/reference/index.html
 
 
 # Javascript testing
+http://searls.github.io/jasmine-maven-plugin/
+
 gruntfile.js in nb-ui
 # ide integration
 

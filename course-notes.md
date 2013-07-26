@@ -30,6 +30,7 @@ For some cases, Maven may not be the right tool. For general automation tasks th
 
 Maven has its way of doing things. If you have a problem that's not obvious to solve, first try to fit it into Maven's lifecycle and existing plugins.
 
+
 ## Maven Basics
 
 ### Creating a New Project
@@ -162,6 +163,7 @@ We'd like to expose our HelloWorld utility as a web service. Write a simple serv
 
 
 ### Integration Testing
+
 Effective integration testing can be one of the trickier problems to solve in Maven. Because integration testing often involves deployment into a container and other associated tasks, it often doesn't fit directly into Maven's model of transforming source code into artifacts, and looks more like general automation. That said, there are ways to work effective integration testing into your build.
 
 The main challenges in adding integration testing to a Maven build are fitting the testing into Maven's lifecycle and triggering the needed software actions to start and stop a container, deploy the software, and run tests against it, all in the correct order. Maven's main construct for ordering operations is its lifecycle. Let's look at the default lifecycle in more detail:
@@ -195,8 +197,22 @@ In the Java world, this normally means building a war file, starting Tomcat or s
 
 The main construct we have in Maven to manage a container effectively is the [Cargo Plugin](http://cargo.codehaus.org/Maven2+plugin). Cargo allows you to configure a container within your Maven project and then start and stop the container at the right phases during the build. The catch is that Cargo works by using a dependency on your war artifact in order to deploy. This means it can't run during the integration-test phase of your web module, but you can separate your integration tests out into a dedicated module that will build after the web module is complete.
 
+Skip tests with Surefire during the test phase, run them in the integration-test phase. Don't forget a dependency on the war, using the war type in the dependency. Set the context with properties on the deployable.
+
+There's one other twist to integration testing: if any of your tests fail, Maven won't continue on to the next phase. If you've forked any processes in your pre-integration-test phase, those processes won't get cleaned up after failing tests. The Failsafe plugin was introduced as a replacement for SureFire to accommodate this case. It's basically a drop-in replacement for Surefire. The default includes for Failsafe are not what you'd expect.
+
 
 ### Exercise: Integration Testing the Web Module
 
 Write a simple integration test for the hello servlet using HTTPClient or Selenium and Cargo.
 
+http://maven.apache.org/surefire/maven-failsafe-plugin/
+http://docs.seleniumhq.org/docs/03_webdriver.jsp
+http://hc.apache.org/httpcomponents-client-ga/quickstart.html
+http://hc.apache.org/httpcomponents-client-ga/download.html (Googled "httpclient maven")
+Overview of integration testing: http://maciejwalkowiak.pl/blog/2012/03/22/integration-tests-with-maven-3-failsafe-and-cargo-plugin/
+http://cargo.codehaus.org/Starting+and+stopping+a+container
+Old (pre-Failsafe) article on integration testing with Cargo: http://www.javacodegeeks.com/2012/09/maven-cargo-plugin-for-integration.html
+Full-featured starter project: https://github.com/ostewart/jumper
+
+Pro tip: take Maven configuration snippets from articles or plugin docs, then convert to the latest version with mvnrepository.com or the original source.
