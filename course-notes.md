@@ -214,5 +214,6 @@ Overview of integration testing: http://maciejwalkowiak.pl/blog/2012/03/22/integ
 http://cargo.codehaus.org/Starting+and+stopping+a+container
 Old (pre-Failsafe) article on integration testing with Cargo: http://www.javacodegeeks.com/2012/09/maven-cargo-plugin-for-integration.html
 Full-featured starter project: https://github.com/ostewart/jumper
+http://docs.codehaus.org/display/MAVENUSER/Maven+and+Integration+Testing
 
 Pro tip: take Maven configuration snippets from articles or plugin docs, then convert to the latest version with mvnrepository.com or the original source.
