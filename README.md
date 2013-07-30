@@ -1,6 +1,8 @@
 Intro to Maven
 ==============
-
+Oliver Stewart
+oliver-pub@trailmagic.com
+2013
 
 ## Why Maven?
 * Regular structure

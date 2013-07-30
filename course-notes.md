@@ -1,6 +1,11 @@
 Intro to Maven Course Notes
 ===========================
 
+Oliver Stewart
+oliver-pub@trailmagic.com
+2013
+
+
 ## Why Maven?
 ### Regular Structure
 * Maven turns source code into artifacts
